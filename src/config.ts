@@ -6,10 +6,10 @@ export const config = {
   
   bio: [
     { icon: '⛓️', text: 'Web3 Builder' },
-    { icon: '🎵', text: '每日高强度 Vibe Coding' },
+    { icon: '🤖', text: 'Vibe Coding', hover: '每日高强度 Vibeeeee' },
     { icon: '🐂', text: '天生牛马圣体', hover: '干啥工作都能干好' },
     { icon: '🏠', text: '远程工作' },
-    { icon: '🌐', text: '域名收藏' },
+    { icon: '🌐', text: '域名收藏', hover: '基本上每年都会收米煮米' },
   ],
 
   startDates: {

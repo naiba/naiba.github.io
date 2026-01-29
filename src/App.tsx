@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { config } from './config'
 import { domains } from 'virtual:domains'
@@ -16,11 +16,8 @@ const TwitterIcon = () => (
 )
 
 const BlogIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 19l7-7 3 3-7 7-3-3z"/>
-    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
-    <path d="M2 2l7.586 7.586"/>
-    <circle cx="11" cy="11" r="2"/>
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <path d="M21.976 24H2.026C.9 24 0 23.1 0 21.976V2.026C0 .9.9 0 2.026 0H21.97C23.1 0 24 .9 24 2.026v19.948C24 23.1 23.1 24 21.976 24zM12.96 5.28c-1.606 0-2.41.845-2.56 1.636-.056.296-.04.636-.04.636H8.39c0-.036.004-.072.008-.104 0 0-.008-.088-.008-.204 0-1.2-.972-2.172-2.172-2.172S4.046 6.044 4.046 7.244v4.464c0 3.6 2.916 6.516 6.516 6.516h3.24c2.544 0 4.608-2.064 4.608-4.608V9.888c0-2.544-2.064-4.608-4.608-4.608h-.84zm1.44 8.4h-4.8c-.48 0-.84-.36-.84-.84s.36-.84.84-.84h4.8c.48 0 .84.36.84.84s-.36.84-.84.84zm0-3.6H12c-.48 0-.84-.36-.84-.84s.36-.84.84-.84h2.4c.48 0 .84.36.84.84s-.36.84-.84.84z"/>
   </svg>
 )
 
@@ -110,6 +107,64 @@ function useGitHubStars() {
   return stars
 }
 
+function useTapOutside() {
+  const [tapped, setTapped] = useState(false)
+  const ref = useRef<HTMLSpanElement>(null)
+
+  useEffect(() => {
+    if (!tapped) return
+    const handler = (e: MouseEvent | TouchEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setTapped(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    document.addEventListener('touchstart', handler, { passive: true })
+    return () => {
+      document.removeEventListener('mousedown', handler)
+      document.removeEventListener('touchstart', handler)
+    }
+  }, [tapped])
+
+  return { tapped, toggle: () => setTapped(prev => !prev), ref }
+}
+
+function BioTag({ item }: { item: { icon: string; text: string; hover?: string; dynamic?: string } }) {
+  const { tapped, toggle, ref } = useTapOutside()
+  const text = renderBioText(item)
+
+  return (
+    <span
+      ref={ref}
+      className={`bio-tag ${item.hover ? 'bio-tag-has-tooltip' : ''} ${tapped ? 'bio-tag-tapped' : ''}`}
+      onClick={() => item.hover && toggle()}
+    >
+      <span className="bio-tag-icon">{item.icon}</span>
+      {text}
+      {item.hover && (
+        <span className="bio-tooltip">{item.hover}</span>
+      )}
+    </span>
+  )
+}
+
+function DomainMore() {
+  const { tapped, toggle, ref } = useTapOutside()
+
+  return (
+    <span
+      ref={ref}
+      className={`domain-card domain-card-more ${tapped ? 'bio-tag-tapped' : ''}`}
+      onClick={toggle}
+    >
+      <span className="domain-text">
+        <span className="domain-name domain-more-dots">...</span>
+      </span>
+      <span className="bio-tooltip">还有一些在停放</span>
+    </span>
+  )
+}
+
 function App() {
   const stars = useGitHubStars()
 
@@ -131,10 +186,7 @@ function App() {
           
           <div className="bio-tags">
             {config.bio.map((item, i) => (
-              <span key={i} className="bio-tag" title={item.hover}>
-                <span className="bio-tag-icon">{item.icon}</span>
-                {renderBioText(item)}
-              </span>
+              <BioTag key={i} item={item} />
             ))}
           </div>
 
@@ -166,10 +218,11 @@ function App() {
                 href={config.social.blog}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="social-link"
+                className="social-link social-link-blog"
                 aria-label="Blog"
               >
                 <BlogIcon />
+                <span className="social-link-text">奶爸博客</span>
               </a>
             )}
           </div>
@@ -234,6 +287,7 @@ function App() {
                   </a>
                 )
               })}
+              <DomainMore />
             </div>
           </section>
         )}

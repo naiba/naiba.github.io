@@ -90,6 +90,45 @@
   font-size: 1.1rem;
 }
 
+.bio-tag-has-tooltip {
+  position: relative;
+  cursor: pointer;
+}
+
+.bio-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--text-primary);
+  color: var(--bg-base);
+  font-size: 0.8rem;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.bio-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--text-primary);
+}
+
+.bio-tag-has-tooltip:hover .bio-tooltip,
+.bio-tag-tapped .bio-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 .social-links {
   display: flex;
   justify-content: center;
@@ -121,6 +160,32 @@
 .social-link svg {
   width: 22px;
   height: 22px;
+}
+
+.social-link-blog {
+  width: auto;
+  padding: 0 var(--space-md);
+  gap: var(--space-xs);
+  border-color: var(--accent);
+  color: var(--accent);
+  animation: blog-pulse 2s ease-in-out infinite;
+}
+
+.social-link-blog:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  animation: none;
+}
+
+.social-link-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+@keyframes blog-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(14, 165, 233, 0); }
 }
 
 .section {
@@ -284,6 +349,28 @@
 
 .domain-card:hover .domain-tld {
   color: var(--accent);
+}
+
+.domain-more-dots {
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+}
+
+.domain-card-more {
+  position: relative;
+  cursor: default;
+  border-style: dashed;
+  color: var(--text-muted);
+}
+
+.domain-card-more:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.domain-card-more:hover .bio-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .footer {
