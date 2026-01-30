@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { config } from './config'
 import { domains } from 'virtual:domains'
+import { useLang, t, type Lang, type BiText } from './i18n'
 
 const GitHubIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor">
@@ -65,12 +66,15 @@ function calcYears(startDate: string): number {
   return Math.floor((now.getTime() - start.getTime()) / (365.25 * 24 * 60 * 60 * 1000))
 }
 
-function renderBioText(item: { icon: string; text: string; dynamic?: string }): string {
+function renderBioText(item: { text: BiText; dynamic?: string }, lang: Lang): string {
   if (item.dynamic && config.startDates[item.dynamic as keyof typeof config.startDates]) {
     const years = calcYears(config.startDates[item.dynamic as keyof typeof config.startDates])
-    return `${item.text} ${years} 年`
+    if (lang === 'zh') {
+      return `${t(item.text, lang)}${years}年`
+    }
+    return `${t(item.text, lang)}${years} at Work`
   }
-  return item.text
+  return t(item.text, lang)
 }
 
 function formatStars(count: number): string {
@@ -129,9 +133,9 @@ function useTapOutside() {
   return { tapped, toggle: () => setTapped(prev => !prev), ref }
 }
 
-function BioTag({ item }: { item: { icon: string; text: string; hover?: string; dynamic?: string } }) {
+function BioTag({ item, lang }: { item: { icon: string; text: BiText; hover?: BiText; dynamic?: string }; lang: Lang }) {
   const { tapped, toggle, ref } = useTapOutside()
-  const text = renderBioText(item)
+  const text = renderBioText(item, lang)
 
   return (
     <span
@@ -142,13 +146,13 @@ function BioTag({ item }: { item: { icon: string; text: string; hover?: string; 
       <span className="bio-tag-icon">{item.icon}</span>
       {text}
       {item.hover && (
-        <span className="bio-tooltip">{item.hover}</span>
+        <span className="bio-tooltip">{t(item.hover, lang)}</span>
       )}
     </span>
   )
 }
 
-function DomainMore() {
+function DomainMore({ lang }: { lang: Lang }) {
   const { tapped, toggle, ref } = useTapOutside()
 
   return (
@@ -160,16 +164,30 @@ function DomainMore() {
       <span className="domain-text">
         <span className="domain-name domain-more-dots">...</span>
       </span>
-      <span className="bio-tooltip">还有一些在停放</span>
+      <span className="bio-tooltip">{t(config.domainMore, lang)}</span>
     </span>
+  )
+}
+
+function LangSwitch({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
+  return (
+    <button
+      className="lang-switch"
+      onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
+      aria-label="Switch language"
+    >
+      {lang === 'zh' ? 'EN' : '中'}
+    </button>
   )
 }
 
 function App() {
   const stars = useGitHubStars()
+  const [lang, setLang] = useLang()
 
   return (
     <div className="page">
+      <LangSwitch lang={lang} setLang={setLang} />
       <div className="container">
         <section className="hero">
           <img
@@ -181,12 +199,12 @@ function App() {
             {config.name}<span className="name-en">{config.nameEn}</span>
           </h1>
           <p className="tagline">
-            {renderTagline(config.tagline)}
+            {renderTagline(t(config.tagline, lang))}
           </p>
           
           <div className="bio-tags">
             {config.bio.map((item, i) => (
-              <BioTag key={i} item={item} />
+              <BioTag key={i} item={item} lang={lang} />
             ))}
           </div>
 
@@ -222,7 +240,7 @@ function App() {
                 aria-label="Blog"
               >
                 <BlogIcon />
-                <span className="social-link-text">奶爸博客</span>
+                <span className="social-link-text">{t(config.blogLabel, lang)}</span>
               </a>
             )}
           </div>
@@ -231,7 +249,7 @@ function App() {
         {config.projects.length > 0 && (
           <section className="section">
             <div className="section-header">
-              <h2 className="section-title">🚀 开源项目</h2>
+              <h2 className="section-title">{t(config.sections.projects, lang)}</h2>
               <div className="section-line" />
             </div>
             
@@ -246,8 +264,8 @@ function App() {
                 >
                   <div className="project-icon">{project.icon}</div>
                   <div className="project-info">
-                    <div className="project-name">{project.name}</div>
-                    <div className="project-desc">{project.desc}</div>
+                    <div className="project-name">{t(project.name, lang)}</div>
+                    <div className="project-desc">{t(project.desc, lang)}</div>
                     <div className="project-stats">
                       <span className="project-stat">
                         <StarIcon /> {stars[project.repo] ? formatStars(stars[project.repo]) : '...'}
@@ -263,7 +281,7 @@ function App() {
         {domains.length > 0 && (
           <section className="section">
             <div className="section-header">
-              <h2 className="section-title">🌐 域名收藏</h2>
+              <h2 className="section-title">{t(config.sections.domains, lang)}</h2>
               <div className="section-line" />
             </div>
             
@@ -276,7 +294,7 @@ function App() {
                     href="#"
                     onClick={(e) => {
                       e.preventDefault()
-                      window.open(`https://${domain}`, '_blank', 'noopener,noreferrer')
+                      window.open(`http://${domain}`, '_blank', 'noopener,noreferrer')
                     }}
                     className="domain-card"
                   >
@@ -287,7 +305,7 @@ function App() {
                   </a>
                 )
               })}
-              <DomainMore />
+              <DomainMore lang={lang} />
             </div>
           </section>
         )}
@@ -295,7 +313,7 @@ function App() {
 
       <footer className="footer">
         <p className="footer-text">
-          {renderFooter(config.footer)}
+          {renderFooter(t(config.footer, lang))}
         </p>
       </footer>
     </div>

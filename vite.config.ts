@@ -14,7 +14,7 @@ const domains = [
   'magua.net',
   'qundao.com',
   'oh1.com',
-  'vibeeeeee.com',
+  'vibeeeee.com',
   'pi4.com',
   'infiniteprogress.org',
   'notthegoodguy.com',
