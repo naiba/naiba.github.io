@@ -17,7 +17,7 @@ interface Project {
 export const config = {
   name: '奶爸',
   nameEn: 'naiba',
-  avatar: 'https://avatars.githubusercontent.com/u/29243953',
+  avatar: 'https://lifelonglearn.ing/logo.png',
   tagline: {
     zh: '一个高级 <highlight>meatbag.co</highlight>',
     en: 'A senior <highlight>meatbag.co</highlight>',
