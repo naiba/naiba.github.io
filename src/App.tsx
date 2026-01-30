@@ -63,7 +63,7 @@ function renderFooter(text: string) {
 function calcYears(startDate: string): number {
   const start = new Date(startDate)
   const now = new Date()
-  return Math.floor((now.getTime() - start.getTime()) / (365.25 * 24 * 60 * 60 * 1000))
+  return Math.ceil((now.getTime() - start.getTime()) / (365.25 * 24 * 60 * 60 * 1000))
 }
 
 function renderBioText(item: { text: BiText; dynamic?: string }, lang: Lang): string {
