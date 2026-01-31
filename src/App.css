@@ -124,21 +124,23 @@
 }
 
 .bio-tooltip {
+  display: none;
   position: absolute;
   bottom: calc(100% + 8px);
   left: 50%;
-  transform: translateX(-50%) translateY(4px);
+  transform: translateX(-50%);
   padding: var(--space-xs) var(--space-sm);
   background: var(--text-primary);
   color: var(--bg-base);
   font-size: 0.8rem;
   border-radius: var(--radius-sm);
-  white-space: nowrap;
+  white-space: normal;
+  text-align: center;
+  width: max-content;
+  max-width: min(300px, 90vw);
   pointer-events: none;
   box-shadow: var(--shadow-md);
   z-index: 10;
-  opacity: 0;
-  transition: opacity 150ms ease, transform 150ms ease;
 }
 
 .bio-tooltip::after {
@@ -153,8 +155,7 @@
 
 .bio-tag-has-tooltip:hover .bio-tooltip,
 .bio-tag-tapped .bio-tooltip {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  display: block;
 }
 
 .social-links {
@@ -397,8 +398,7 @@
 }
 
 .domain-card-more:hover .bio-tooltip {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  display: block;
 }
 
 .footer {

@@ -133,20 +133,67 @@ function useTapOutside() {
   return { tapped, toggle: () => setTapped(prev => !prev), ref }
 }
 
+function adjustTooltip(el: HTMLSpanElement) {
+  const pad = 8
+  el.style.left = '50%'
+  const rect = el.getBoundingClientRect()
+  if (rect.left < pad) {
+    el.style.left = `calc(50% + ${pad - rect.left}px)`
+  } else if (rect.right > window.innerWidth - pad) {
+    el.style.left = `calc(50% - ${rect.right - window.innerWidth + pad}px)`
+  }
+}
+
+function useTooltipAlign(visible: boolean) {
+  const tooltipRef = useRef<HTMLSpanElement>(null)
+  const parentRef = useRef<HTMLSpanElement>(null)
+
+  useEffect(() => {
+    const el = tooltipRef.current
+    if (!el || !visible) {
+      if (el) el.style.left = ''
+      return
+    }
+    adjustTooltip(el)
+  }, [visible])
+
+  useEffect(() => {
+    const parent = parentRef.current
+    const tooltip = tooltipRef.current
+    if (!parent || !tooltip) return
+    const onEnter = () => adjustTooltip(tooltip)
+    const onLeave = () => { tooltip.style.left = '' }
+    parent.addEventListener('mouseenter', onEnter)
+    parent.addEventListener('mouseleave', onLeave)
+    return () => {
+      parent.removeEventListener('mouseenter', onEnter)
+      parent.removeEventListener('mouseleave', onLeave)
+    }
+  }, [])
+
+  return { tooltipRef, parentRef }
+}
+
 function BioTag({ item, lang }: { item: { icon: string; text: BiText; hover?: BiText; dynamic?: string }; lang: Lang }) {
   const { tapped, toggle, ref } = useTapOutside()
+  const { tooltipRef, parentRef } = useTooltipAlign(tapped)
   const text = renderBioText(item, lang)
+
+  const setRefs = (el: HTMLSpanElement | null) => {
+    (ref as React.MutableRefObject<HTMLSpanElement | null>).current = el;
+    (parentRef as React.MutableRefObject<HTMLSpanElement | null>).current = el
+  }
 
   return (
     <span
-      ref={ref}
+      ref={setRefs}
       className={`bio-tag ${item.hover ? 'bio-tag-has-tooltip' : ''} ${tapped ? 'bio-tag-tapped' : ''}`}
       onClick={() => item.hover && toggle()}
     >
       <span className="bio-tag-icon">{item.icon}</span>
       {text}
       {item.hover && (
-        <span className="bio-tooltip">{t(item.hover, lang)}</span>
+        <span ref={tooltipRef} className="bio-tooltip">{t(item.hover, lang)}</span>
       )}
     </span>
   )
@@ -154,17 +201,23 @@ function BioTag({ item, lang }: { item: { icon: string; text: BiText; hover?: Bi
 
 function DomainMore({ lang }: { lang: Lang }) {
   const { tapped, toggle, ref } = useTapOutside()
+  const { tooltipRef, parentRef } = useTooltipAlign(tapped)
+
+  const setRefs = (el: HTMLSpanElement | null) => {
+    (ref as React.MutableRefObject<HTMLSpanElement | null>).current = el;
+    (parentRef as React.MutableRefObject<HTMLSpanElement | null>).current = el
+  }
 
   return (
     <span
-      ref={ref}
+      ref={setRefs}
       className={`domain-card domain-card-more ${tapped ? 'bio-tag-tapped' : ''}`}
       onClick={toggle}
     >
       <span className="domain-text">
         <span className="domain-name domain-more-dots">...</span>
       </span>
-      <span className="bio-tooltip">{t(config.domainMore, lang)}</span>
+      <span ref={tooltipRef} className="bio-tooltip">{t(config.domainMore, lang)}</span>
     </span>
   )
 }
