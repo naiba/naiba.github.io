@@ -1,22 +1,69 @@
 <!doctype html>
-<html lang="en">
+<html lang="__HTML_LANG__">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="https://lifelonglearn.ing/favicon.ico" />
+    <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="naiba - A senior meatbag.co, building things on the internet." />
-    <meta name="author" content="naiba" />
-    <meta property="og:title" content="naiba" />
-    <meta property="og:description" content="A senior meatbag.co, building things on the internet." />
+    <meta name="description" content="__SITE_DESCRIPTION__" />
+    <meta name="author" content="__SITE_AUTHOR__" />
+    <meta name="keywords" content="__SITE_KEYWORDS__" />
+    <link rel="canonical" href="__SITE_URL__/" />
+    <meta name="theme-color" content="__SITE_THEME_COLOR__" />
+
+    <link rel="preload" href="__SITE_AVATAR__" as="image" />
+    <link rel="preconnect" href="https://fonts.googleapis.cn" />
+    <link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+    <link rel="preload" href="https://fonts.googleapis.cn/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.cn/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" /></noscript>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="__SITE_TITLE__" />
+    <meta property="og:description" content="__SITE_DESCRIPTION__" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lifelonglearn.ing/logo.png" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@0xnaiba" />
-    <meta name="twitter:creator" content="@0xnaiba" />
-    <title>naiba</title>
+    <meta property="og:url" content="__SITE_URL__/" />
+    <meta property="og:image" content="__SITE_OG_IMAGE__" />
+    <meta property="og:site_name" content="__SITE_NAME__" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image:width" content="1500" />
+    <meta property="og:image:height" content="1500" />
+    <meta property="og:locale:alternate" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="__TWITTER_HANDLE__" />
+    <meta name="twitter:creator" content="__TWITTER_HANDLE__" />
+    <meta name="twitter:title" content="__SITE_TITLE__" />
+    <meta name="twitter:description" content="__SITE_DESCRIPTION__" />
+    <meta name="twitter:image" content="__SITE_OG_IMAGE__" />
+
+    <title>__SITE_TITLE__</title>
+
+    <script type="application/ld+json">
+    __JSON_LD__
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <a href="#main-content" style="position:absolute;top:-100%;left:0;padding:0.5rem 1rem;background:#0369a1;color:#fff;font-weight:600;z-index:200;border-radius:0 0 8px 0;transition:top 0.2s" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Skip to main content</a>
+    <main id="main-content">
+      <div id="root"></div>
+    </main>
+    <noscript>
+      <div style="max-width:800px;margin:0 auto;padding:2rem;font-family:sans-serif">
+        <img src="__SITE_AVATAR__" alt="__NOSCRIPT_ALT__" width="120" height="120" style="border-radius:50%" />
+        <h1>__NOSCRIPT_NAME__ <span>__NOSCRIPT_NAME_EN__</span></h1>
+        <p>__NOSCRIPT_JOB__</p>
+        <ul>
+__NOSCRIPT_BIO__
+        </ul>
+        <h2>Open Source Projects</h2>
+        <ul>
+__NOSCRIPT_PROJECTS__
+        </ul>
+        <p>
+          __NOSCRIPT_SOCIAL__
+        </p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

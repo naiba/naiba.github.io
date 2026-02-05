@@ -84,25 +84,55 @@ function formatStars(count: number): string {
   return count.toString()
 }
 
+const STARS_CACHE_KEY = 'gh_stars'
+const STARS_CACHE_TTL = 60 * 60 * 1000 // 1 hour
+
 function useGitHubStars() {
-  const [stars, setStars] = useState<Record<string, number>>({})
+  const [stars, setStars] = useState<Record<string, number>>(() => {
+    try {
+      const raw = localStorage.getItem(STARS_CACHE_KEY)
+      if (raw) {
+        const { data, ts } = JSON.parse(raw) as { data: Record<string, number>; ts: number }
+        if (Date.now() - ts < STARS_CACHE_TTL) return data
+      }
+    } catch { /* ignore */ }
+    return {}
+  })
 
   useEffect(() => {
-    const fetchStars = async () => {
-      const results: Record<string, number> = {}
-      
-      for (const project of config.projects) {
-        try {
-          const res = await fetch(`https://api.github.com/repos/${project.repo}`)
-          if (res.ok) {
-            const data = await res.json()
-            results[project.repo] = data.stargazers_count
-          }
-        } catch {
-        }
+    try {
+      const raw = localStorage.getItem(STARS_CACHE_KEY)
+      if (raw) {
+        const { ts } = JSON.parse(raw) as { ts: number }
+        if (Date.now() - ts < STARS_CACHE_TTL) return
       }
-      
-      setStars(results)
+    } catch { /* ignore */ }
+
+    const fetchStars = async () => {
+      const entries = await Promise.all(
+        config.projects.map(async (project) => {
+          try {
+            const res = await fetch(`https://api.github.com/repos/${project.repo}`)
+            if (res.ok) {
+              const data = await res.json()
+              return [project.repo, data.stargazers_count] as const
+            }
+          } catch { /* ignore */ }
+          return null
+        })
+      )
+
+      const results: Record<string, number> = {}
+      for (const entry of entries) {
+        if (entry) results[entry[0]] = entry[1]
+      }
+
+      if (Object.keys(results).length > 0) {
+        setStars(results)
+        try {
+          localStorage.setItem(STARS_CACHE_KEY, JSON.stringify({ data: results, ts: Date.now() }))
+        } catch { /* ignore */ }
+      }
     }
 
     fetchStars()
@@ -245,7 +275,9 @@ function App() {
         <section className="hero">
           <img
             src={config.avatar}
-            alt={config.name}
+            alt={`${config.name} (${config.nameEn}) - Web3 Builder`}
+            width={120}
+            height={120}
             className="avatar"
           />
           <h1 className="name">
@@ -344,12 +376,11 @@ function App() {
                 return (
                   <a
                     key={encoded}
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      window.open(`http://${domain}`, '_blank', 'noopener,noreferrer')
-                    }}
+                    href={`https://${domain}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="domain-card"
+                    aria-label={`Visit ${domain}`}
                   >
                     <span className="domain-text">
                       <span className="domain-name">{name}</span>

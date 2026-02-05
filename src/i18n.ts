@@ -8,6 +8,7 @@ function detectLang(): Lang {
 }
 
 let currentLang: Lang = detectLang()
+document.documentElement.lang = currentLang
 const listeners = new Set<() => void>()
 
 export function getLang(): Lang {
