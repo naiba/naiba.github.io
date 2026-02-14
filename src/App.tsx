@@ -376,7 +376,7 @@ function App() {
                 return (
                   <a
                     key={encoded}
-                    href={`https://${domain}`}
+                    href={`http://${domain}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="domain-card"
