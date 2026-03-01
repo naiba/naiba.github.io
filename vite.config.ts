@@ -62,6 +62,20 @@ const siteConfig = {
       language: 'Go',
       license: 'https://opensource.org/licenses/MIT',
     },
+    {
+      name: { zh: 'Bonds', en: 'Bonds' },
+      repo: 'naiba/bonds',
+      desc: { zh: '现代化个人关系管理工具', en: 'Modern personal relationship manager' },
+      icon: '💛',
+      language: 'Go',
+    },
+    {
+      name: { zh: 'CloudCode', en: 'CloudCode' },
+      repo: 'naiba/cloudcode',
+      desc: { zh: '自托管 OpenCode 多实例管理平台', en: 'Self-hosted OpenCode multi-instance platform' },
+      icon: '☁️',
+      language: 'Go',
+    },
   ],
   tagline: {
     zh: '一个高级 <highlight>meatbag.co</highlight>',
@@ -293,4 +307,7 @@ function sitemapPlugin(): Plugin {
 export default defineConfig({
   plugins: [siteConfigPlugin(), encodeDomainsPlugin(), htmlMetaPlugin(), sitemapPlugin(), react()],
   base: '/',
+  server: {
+    allowedHosts: true,
+  },
 })

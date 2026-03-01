@@ -272,72 +272,80 @@ function App() {
     <div className="page">
       <LangSwitch lang={lang} setLang={setLang} />
       <div className="container">
-        <section className="hero">
-          <img
-            src={config.avatar}
-            alt={`${config.name} (${config.nameEn}) - Web3 Builder`}
-            width={120}
-            height={120}
-            className="avatar"
-          />
-          <h1 className="name">
-            {config.name}<span className="name-en">{config.nameEn}</span>
-          </h1>
-          <p className="tagline">
-            {renderTagline(t(config.tagline, lang))}
-          </p>
-          
-          <div className="bio-tags">
-            {config.bio.map((item, i) => (
-              <BioTag key={i} item={item} lang={lang} />
-            ))}
-          </div>
+        {/* ─── Hero: asymmetric editorial layout ─── */}
+        <section className="hero anim-stagger" style={{ animationDelay: '0s' }}>
+          <div className="hero-layout">
+            <div className="hero-avatar-col">
+              <img
+                src={config.avatar}
+                alt={`${config.name} (${config.nameEn}) - Web3 Builder`}
+                width={120}
+                height={120}
+                className="avatar"
+              />
+            </div>
+            <div className="hero-content">
+              <h1 className="name">
+                {config.name}<span className="name-en">{config.nameEn}</span>
+              </h1>
+              <p className="tagline">
+                {renderTagline(t(config.tagline, lang))}
+              </p>
 
-          <div className="social-links">
-            {config.social.github && (
-              <a
-                href={config.social.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-link"
-                aria-label="GitHub"
-              >
-                <GitHubIcon />
-              </a>
-            )}
-            {config.social.twitter && (
-              <a
-                href={config.social.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-link"
-                aria-label="Twitter"
-              >
-                <TwitterIcon />
-              </a>
-            )}
-            {config.social.blog && (
-              <a
-                href={config.social.blog}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-link social-link-blog"
-                aria-label="Blog"
-              >
-                <BlogIcon />
-                <span className="social-link-text">{t(config.blogLabel, lang)}</span>
-              </a>
-            )}
+              <div className="bio-tags">
+                {config.bio.map((item, i) => (
+                  <BioTag key={i} item={item} lang={lang} />
+                ))}
+              </div>
+
+              <div className="social-links">
+                {config.social.github && (
+                  <a
+                    href={config.social.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link"
+                    aria-label="GitHub"
+                  >
+                    <GitHubIcon />
+                  </a>
+                )}
+                {config.social.twitter && (
+                  <a
+                    href={config.social.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link"
+                    aria-label="Twitter"
+                  >
+                    <TwitterIcon />
+                  </a>
+                )}
+                {config.social.blog && (
+                  <a
+                    href={config.social.blog}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link social-link-blog"
+                    aria-label="Blog"
+                  >
+                    <BlogIcon />
+                    <span className="social-link-text">{t(config.blogLabel, lang)}</span>
+                  </a>
+                )}
+              </div>
+            </div>
           </div>
         </section>
 
+        {/* ─── Projects ─── */}
         {config.projects.length > 0 && (
-          <section className="section">
+          <section className="section anim-stagger" style={{ animationDelay: '0.12s' }}>
             <div className="section-header">
               <h2 className="section-title">{t(config.sections.projects, lang)}</h2>
               <div className="section-line" />
             </div>
-            
+
             <div className="projects-grid">
               {config.projects.map((project) => (
                 <a
@@ -347,29 +355,30 @@ function App() {
                   rel="noopener noreferrer"
                   className="project-card"
                 >
-                  <div className="project-icon">{project.icon}</div>
-                  <div className="project-info">
-                    <div className="project-name">{t(project.name, lang)}</div>
-                    <div className="project-desc">{t(project.desc, lang)}</div>
-                    <div className="project-stats">
-                      <span className="project-stat">
-                        <StarIcon /> {stars[project.repo] ? formatStars(stars[project.repo]) : '...'}
+                  <div className="project-header">
+                    <span className="project-icon">{project.icon}</span>
+                    <span className="project-name">{t(project.name, lang)}</span>
+                    {stars[project.repo] != null && (
+                      <span className="project-star">
+                        <StarIcon /> {formatStars(stars[project.repo])}
                       </span>
-                    </div>
+                    )}
                   </div>
+                  <div className="project-desc">{t(project.desc, lang)}</div>
                 </a>
               ))}
             </div>
           </section>
         )}
 
+        {/* ─── Domains ─── */}
         {domains.length > 0 && (
-          <section className="section">
+          <section className="section anim-stagger" style={{ animationDelay: '0.24s' }}>
             <div className="section-header">
               <h2 className="section-title">{t(config.sections.domains, lang)}</h2>
               <div className="section-line" />
             </div>
-            
+
             <div className="domains-grid">
               {domains.map((encoded) => {
                 const { domain, name, tld } = parseDomain(encoded)
@@ -395,7 +404,7 @@ function App() {
         )}
       </div>
 
-      <footer className="footer">
+      <footer className="footer anim-stagger" style={{ animationDelay: '0.36s' }}>
         <p className="footer-text">
           {renderFooter(t(config.footer, lang))}
         </p>
