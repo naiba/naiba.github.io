@@ -40,6 +40,14 @@ const siteConfig = {
       license: 'https://opensource.org/licenses/Apache-2.0',
     },
     {
+      name: { zh: 'nbdns', en: 'nbdns' },
+      repo: 'naiba/nbdns',
+      desc: { zh: '智能 DNS 中继器，内置 Web 面板与 DoH 支持', en: 'Smart DNS relay with web dashboard & DoH support' },
+      icon: '🦭',
+      language: 'Go',
+      license: 'https://opensource.org/licenses/MIT',
+    },
+    {
       name: { zh: 'Solitudes', en: 'Solitudes' },
       repo: 'naiba/solitudes',
       desc: { zh: '支持专栏、全文搜索的博客引擎', en: 'Blog engine with columns & full-text search' },
@@ -47,26 +55,10 @@ const siteConfig = {
       language: 'Go',
     },
     {
-      name: { zh: 'nbdns', en: 'nbdns' },
-      repo: 'naiba/nbdns',
-      desc: { zh: '智能 DNS 中继器', en: 'Smart DNS relay' },
-      icon: '🦭',
-      language: 'Go',
-      license: 'https://opensource.org/licenses/MIT',
-    },
-    {
-      name: { zh: 'nb', en: 'nb' },
-      repo: 'naiba/nb',
-      desc: { zh: '增强版 git/ssh/scp 命令行工具', en: 'Enhanced git/ssh/scp CLI tool' },
-      icon: '🔪',
-      language: 'Go',
-      license: 'https://opensource.org/licenses/MIT',
-    },
-    {
-      name: { zh: 'Bonds', en: 'Bonds' },
-      repo: 'naiba/bonds',
-      desc: { zh: '现代化个人关系管理工具', en: 'Modern personal relationship manager' },
-      icon: '💛',
+      name: { zh: 'Proxy in a Box', en: 'Proxy in a Box' },
+      repo: 'naiba/proxy-in-a-box',
+      desc: { zh: '自动代理池，抓取、验证、轮转一体化', en: 'Auto proxy pool — crawl, validate & rotate in one' },
+      icon: '📦',
       language: 'Go',
     },
     {
@@ -76,10 +68,17 @@ const siteConfig = {
       icon: '☁️',
       language: 'Go',
     },
+    {
+      name: { zh: 'Bonds', en: 'Bonds' },
+      repo: 'naiba/bonds',
+      desc: { zh: '现代化个人关系管理工具', en: 'Modern personal relationship manager' },
+      icon: '💛',
+      language: 'Go',
+    },
   ],
   tagline: {
-    zh: '一个高级 <highlight>meatbag.co</highlight>',
-    en: 'A senior <highlight>meatbag.co</highlight>',
+    zh: '一个装「<highlight>饰</highlight>」的 <highlight>meatbag.co</highlight>',
+    en: 'A sentient <highlight>meatbag.co</highlight>',
   },
   footer: {
     zh: 'Keep building <heart />',
@@ -149,7 +148,7 @@ function encodeDomainsPlugin(): Plugin {
 
 function htmlMetaPlugin(): Plugin {
   const c = siteConfig
-  const title = `${c.nameEn} (${c.name}) - ${c.jobTitle} & Open Source Developer`
+  const title = `${c.nameEn} - ${c.jobTitle} & Open Source Developer`
   const sameAs = [c.social.github, c.social.twitter, c.social.blog].filter(Boolean)
 
   const softwareEntities = c.projects.map(p => {
@@ -236,12 +235,7 @@ function htmlMetaPlugin(): Plugin {
     .join('\n')
 
   const noscriptProjects = c.projects
-    .map(p => {
-      const displayName = p.name.zh === p.name.en
-        ? p.name.zh
-        : `${p.name.zh} (${p.name.en})`
-      return `          <li><a href="https://github.com/${p.repo}">${displayName}</a> - ${p.desc.zh}</li>`
-    })
+    .map(p => `          <li><a href="https://github.com/${p.repo}">${p.name.en}</a> - ${p.desc.en}</li>`)
     .join('\n')
 
   const noscriptSocial = [
@@ -271,8 +265,8 @@ function htmlMetaPlugin(): Plugin {
         '__NOSCRIPT_NAME__': c.name,
         '__NOSCRIPT_NAME_EN__': c.nameEn,
         '__NOSCRIPT_JOB__': `${c.jobTitle} &amp; Open Source Developer`,
-        '__NOSCRIPT_ALT__': `${c.nameEn} (${c.name}) - ${c.jobTitle}`,
-        '__HTML_LANG__': 'zh-CN',
+        '__NOSCRIPT_ALT__': `${c.nameEn} - ${c.jobTitle}`,
+        '__HTML_LANG__': 'en',
       }
 
       let result = html

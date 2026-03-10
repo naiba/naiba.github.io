@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { siteConfig } from 'virtual:site-config'
 
 export type Lang = 'zh' | 'en'
 
@@ -7,8 +8,16 @@ function detectLang(): Lang {
   return langs.some((l) => l.startsWith('zh')) ? 'zh' : 'en'
 }
 
+function langTitle(lang: Lang): string {
+  const c = siteConfig
+  return lang === 'zh'
+    ? `${c.nameEn} (${c.name}) - ${c.jobTitle} & Open Source Developer`
+    : `${c.nameEn} - ${c.jobTitle} & Open Source Developer`
+}
+
 let currentLang: Lang = detectLang()
-document.documentElement.lang = currentLang
+document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en'
+document.title = langTitle(currentLang)
 const listeners = new Set<() => void>()
 
 export function getLang(): Lang {
@@ -17,7 +26,8 @@ export function getLang(): Lang {
 
 export function setLang(lang: Lang) {
   currentLang = lang
-  document.documentElement.lang = lang
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en'
+  document.title = langTitle(lang)
   listeners.forEach((fn) => fn())
 }
 

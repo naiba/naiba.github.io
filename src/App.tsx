@@ -272,13 +272,13 @@ function App() {
     <div className="page">
       <LangSwitch lang={lang} setLang={setLang} />
       <div className="container">
-        {/* ─── Hero: asymmetric editorial layout ─── */}
+        {/* ─── Hero: logo + name + slogan ─── */}
         <section className="hero anim-stagger" style={{ animationDelay: '0s' }}>
           <div className="hero-layout">
             <div className="hero-avatar-col">
               <img
                 src={config.avatar}
-                alt={`${config.name} (${config.nameEn}) - Web3 Builder`}
+                alt={`${config.nameEn} - Web3 Builder`}
                 width={120}
                 height={120}
                 className="avatar"
@@ -286,61 +286,64 @@ function App() {
             </div>
             <div className="hero-content">
               <h1 className="name">
-                {config.name}<span className="name-en">{config.nameEn}</span>
+                {lang === 'zh' ? (<>{config.name}<span className="name-en">{config.nameEn}</span></>) : config.nameEn}
               </h1>
               <p className="tagline">
                 {renderTagline(t(config.tagline, lang))}
               </p>
-
-              <div className="bio-tags">
-                {config.bio.map((item, i) => (
-                  <BioTag key={i} item={item} lang={lang} />
-                ))}
-              </div>
-
-              <div className="social-links">
-                {config.social.github && (
-                  <a
-                    href={config.social.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social-link"
-                    aria-label="GitHub"
-                  >
-                    <GitHubIcon />
-                  </a>
-                )}
-                {config.social.twitter && (
-                  <a
-                    href={config.social.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social-link"
-                    aria-label="Twitter"
-                  >
-                    <TwitterIcon />
-                  </a>
-                )}
-                {config.social.blog && (
-                  <a
-                    href={config.social.blog}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social-link social-link-blog"
-                    aria-label="Blog"
-                  >
-                    <BlogIcon />
-                    <span className="social-link-text">{t(config.blogLabel, lang)}</span>
-                  </a>
-                )}
-              </div>
             </div>
+          </div>
+        </section>
+
+        {/* ─── Quick info: bio tags + social links 横排 ─── */}
+        <section className="quick-info anim-stagger" style={{ animationDelay: '0.06s' }}>
+          <div className="bio-tags">
+            {config.bio.map((item, i) => (
+              <BioTag key={i} item={item} lang={lang} />
+            ))}
+          </div>
+
+          <div className="social-links">
+            {config.social.github && (
+              <a
+                href={config.social.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link"
+                aria-label="GitHub"
+              >
+                <GitHubIcon />
+              </a>
+            )}
+            {config.social.twitter && (
+              <a
+                href={config.social.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link"
+                aria-label="Twitter"
+              >
+                <TwitterIcon />
+              </a>
+            )}
+            {config.social.blog && (
+              <a
+                href={config.social.blog}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link social-link-blog"
+                aria-label="Blog"
+              >
+                <BlogIcon />
+                <span className="social-link-text">{t(config.blogLabel, lang)}</span>
+              </a>
+            )}
           </div>
         </section>
 
         {/* ─── Projects ─── */}
         {config.projects.length > 0 && (
-          <section className="section anim-stagger" style={{ animationDelay: '0.12s' }}>
+          <section className="section anim-stagger" style={{ animationDelay: '0.15s' }}>
             <div className="section-header">
               <h2 className="section-title">{t(config.sections.projects, lang)}</h2>
               <div className="section-line" />
@@ -373,7 +376,7 @@ function App() {
 
         {/* ─── Domains ─── */}
         {domains.length > 0 && (
-          <section className="section anim-stagger" style={{ animationDelay: '0.24s' }}>
+          <section className="section anim-stagger" style={{ animationDelay: '0.25s' }}>
             <div className="section-header">
               <h2 className="section-title">{t(config.sections.domains, lang)}</h2>
               <div className="section-line" />
