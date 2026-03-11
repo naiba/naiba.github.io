@@ -77,8 +77,8 @@ const siteConfig = {
     },
   ],
   tagline: {
-    zh: '一个装「<highlight>饰</highlight>」的 <highlight>meatbag.co</highlight>',
-    en: 'A sentient <highlight>meatbag.co</highlight>',
+    zh: '<highlight>Meatbag.co</highlight> Problems.',
+    en: '<highlight>Meatbag.co</highlight> Problems.',
   },
   footer: {
     zh: 'Keep building <heart />',
