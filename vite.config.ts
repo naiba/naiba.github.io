@@ -21,7 +21,7 @@ const siteConfig = {
   },
   twitterHandle: '@0xnaiba',
   bio: [
-    { icon: '🆓', text: { zh: 'Web3 Builder', en: 'Web3 Builder' } },
+    { icon: '🪙', text: { zh: 'Web3 Builder', en: 'Web3 Builder' } },
     { icon: '🧑‍💻', text: { zh: '工作第', en: 'Year ' }, hover: { zh: '👀', en: '👀' }, dynamic: 'working' },
     { icon: '🏠', text: { zh: '居家办公', en: 'Work from Home' } },
     { icon: '🌐', text: { zh: '域名玩家', en: 'Domainer' }, hover: { zh: '基本上每年都会收米煮米', en: 'Buying & selling domains every year' } },
