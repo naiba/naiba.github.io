@@ -94,8 +94,8 @@ const siteConfig = {
 
 const domains = [
   '5.nu',
-  'getshitpaid.com',
-  'infiniteprogress.org',
+  'rekt.im',
+  'uselessclass.net',
   'lajilao.com',
   'letshithappen.com',
   'magua.net',
@@ -108,7 +108,7 @@ const domains = [
   'qio.ng',
   'qundao.com',
   'retiredbyai.com',
-  'vibeeeee.com',
+  'musclememo.net',
   'yii.com',
 ]
 
